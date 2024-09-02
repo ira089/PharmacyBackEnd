@@ -16,7 +16,6 @@ const userShema = new Schema(
     },
     password: {
       type: String,
-      match: userConstants.passwordRegepxp,
       required: [true, "Password is required"],
     },
     email: {
