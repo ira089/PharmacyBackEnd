@@ -29,7 +29,7 @@ export const signup =  async (req, res, next) => {
 const verifyEmail ={
     to: newUser.email,
     subject: "Verify email",
-    html: `<a target="_blank" href="${PROJECT_URL}/api/users/verify/${verificationToken}"> Click verify email</a>`
+    html: `<a target="_blank" href="${PROJECT_URL}/api/user/verify/${verificationToken}"> Click verify email</a>`
 }
 
 await sendEmail(verifyEmail);
@@ -80,7 +80,7 @@ export const resendVerify =  async (req, res, next) => {
         const verifyEmail ={
             to: email,
             subject: "Verify email",
-            html: `<a target="_blank" href="${PROJECT_URL}/api/users/verify/${user.verificationToken}"> Click verify email</a>`
+            html: `<a target="_blank" href="${PROJECT_URL}/api/user/verify/${user.verificationToken}"> Click verify email</a>`
         }
         
         await sendEmail(verifyEmail);

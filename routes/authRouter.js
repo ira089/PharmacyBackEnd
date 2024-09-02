@@ -17,7 +17,7 @@ authRouter.post("/logout", authenticate, authControllers.signout );
 
 authRouter.patch("/", validateBody(usersSchemas.userUpSubcription), authenticate, authControllers.updateSubscription );
 
-authRouter.post("/avatars", authenticate, upload.single("avatar"), authControllers.updateAvatar );
+// authRouter.post("/avatars", authenticate, upload.single("avatar"), authControllers.updateAvatar );
 
 authRouter.get("/verify/:verificationToken", authControllers.verify );
 
