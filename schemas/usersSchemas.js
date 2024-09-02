@@ -13,11 +13,11 @@ export const userSigninSchema = Joi.object({
     password: Joi.string().pattern(userConstants.passwordRegepxp).required(),
   });
 
-export const userUpSubcription = Joi.object({
-  subscription: Joi.string()
-    .valid(...userConstants.subscriptionList)
-    .required(),
-});
+// export const userUpSubcription = Joi.object({
+//   subscription: Joi.string()
+//     .valid(...userConstants.subscriptionList)
+//     .required(),
+// });
 
 // export const userEmailSchema = Joi.object({
 //     email: Joi.string().pattern(userConstants.emailRegepxp).required(),
