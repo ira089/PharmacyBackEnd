@@ -42,7 +42,9 @@ const signin = async (req, res) => {
 
   res.status(200).json({
     token: token,
-    
+    name: user.name,
+    email: user.email,
+    phone: user.phone,
   });
 };
 
