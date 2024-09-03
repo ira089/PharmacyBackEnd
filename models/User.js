@@ -6,7 +6,6 @@ const userShema = new Schema(
   {
     name: {
       type: String,
-      match: userConstants.nameRegepxp,
       required: [true, "Name is required"],
     },
     phone: {

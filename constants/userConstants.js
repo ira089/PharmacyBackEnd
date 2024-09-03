@@ -1,5 +1,5 @@
-export const emailRegepxp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+export const emailRegepxp = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 
-export const phoneRegepxp = /^\+\d{1,4}\d{9,12}$/;
+export const phoneRegepxp = /^\+38\d{10}$/;
 
-export const nameRegepxp = /^[A-Z][a-z]+ [A-Z][a-z]+$/;
+
