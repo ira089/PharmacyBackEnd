@@ -20,8 +20,7 @@ const signup = async (req, res) => {
     password: hashPassword,
   });
   res.status(201).json({
-    name: newUser.name,
-    email: newUser.email,
+    user: { name: newUser.name, email: newUser.email, phone: newUser.phone },
   });
 };
 
@@ -43,12 +42,13 @@ const signin = async (req, res) => {
 
   res.status(200).json({
     token: token,
+    user: { name, email, phone },
   });
 };
 
 const getCurrent = async (req, res) => {
-  const { email, name } = req.user;
-  res.status(201).json({ email, name });
+  const { email, name, phone } = req.user;
+  res.status(201).json({ email, name, phone });
 };
 
 const signout = async (req, res) => {
