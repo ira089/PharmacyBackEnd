@@ -3,10 +3,9 @@ import morgan from "morgan";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import nodemailer from "nodemailer"
-
+// import nodemailer from "nodemailer"
 import authRouter from "./routes/authRouter.js";
-import contactsRouter from "./routes/contactsRouter.js";
+import storesRouter from "./routes/storesRouter.js";
 
 
 dotenv.config();
@@ -17,10 +16,10 @@ const app = express();
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public"));
+// app.use(express.static("public"));
 
 app.use("/api/users", authRouter)
-app.use("/api/contacts", contactsRouter);
+app.use("/api/pharmacies", storesRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
