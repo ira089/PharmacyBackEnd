@@ -3,28 +3,36 @@ import * as hooks from './hooks.js'
 
 
 const productShema = new Schema({
-    name: {
+    photo: {
         type: String,
         required: true, 
     },
-    address: {
+    name: {
         type: String,
+        required: true,
     },
-    phone: {
+    suppliers: {
         type: String,
+        required: true,
     },
-    city: {
+    stock: {
         type: String,
+        required: true,
     },
-    rating: {
-        type: Number,
+    price: {
+        type: String,
+        required: true,
+    },
+    category: {
+        type: String,
+        required: true,
     },
     
 })
 
-storeShema.post("save", hooks.handleSaveError);
-storeShema.pre("findOneAndUpdate", hooks.setUpdateSetting );
-storeShema.post('findOneAndUpdate', hooks.handleSaveError);
+productShema.post("save", hooks.handleSaveError);
+productShema.pre("findOneAndUpdate", hooks.setUpdateSetting );
+productShema.post('findOneAndUpdate', hooks.handleSaveError);
 
 
 const Product = model("product", productShema);
