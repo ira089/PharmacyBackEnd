@@ -1,33 +1,31 @@
-import {  Schema, model } from "mongoose";
-import * as hooks from './hooks.js'
+import { Schema, model } from "mongoose";
+import * as hooks from "./hooks.js";
 
-
-const storeShema = new Schema({
+const storeShema = new Schema(
+  {
     name: {
-        type: String,
-        required: true, 
+      type: String,
+      required: true,
     },
     address: {
-        type: String,
+      type: String,
     },
     phone: {
-        type: String,
+      type: String,
     },
     city: {
-        type: String,
+      type: String,
     },
     rating: {
-        type: Number,
+      type: Number,
     },
-    
-    
-    
-}, {versionKey: false, timestamps:true})
+  },
+  { versionKey: false, timestamps: true }
+);
 
 storeShema.post("save", hooks.handleSaveError);
-storeShema.pre("findOneAndUpdate", hooks.setUpdateSetting );
-storeShema.post('findOneAndUpdate', hooks.handleSaveError);
-
+storeShema.pre("findOneAndUpdate", hooks.setUpdateSetting);
+storeShema.post("findOneAndUpdate", hooks.handleSaveError);
 
 const Pharmacie = model("pharmacie", storeShema);
 export default Pharmacie;

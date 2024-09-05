@@ -6,7 +6,8 @@ import dotenv from "dotenv";
 // import nodemailer from "nodemailer"
 import authRouter from "./routes/authRouter.js";
 import storesRouter from "./routes/storesRouter.js";
-import reviewsRouter from "./routes/reviewsRouter.js"
+import reviewsRouter from "./routes/reviewsRouter.js";
+import productsRouter from "./routes/productsRouter.js"
 
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use("/api/users", authRouter)
 app.use("/api/pharmacies", storesRouter);
 app.use("/api/reviews", reviewsRouter);
+app.use("/api/products", productsRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
