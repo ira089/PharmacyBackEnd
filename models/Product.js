@@ -27,6 +27,12 @@ const productShema = new Schema({
         type: String,
         required: true,
     },
+    description: {
+        type: String,
+    },
+    reviews: {
+        type: Array,
+    }
     
 })
 
