@@ -22,7 +22,17 @@ const productsAll = async (req, res) => {
   });
 };
 
+const getById = async (req, res) => {
+  const { id } = req.params;
+  const result = await productsServices.getProductById(id);
+  if (!result) {
+      throw HttpError(404, `Product with id=${id} not found`);
+  }
+
+  res.json(result);
+}
+
 export default {
     productsAll: ctrlWrapper(productsAll),
-   
+    getById: ctrlWrapper(getById),
   };
