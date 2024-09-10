@@ -6,5 +6,7 @@ export const priceRegepxp = /^\d+\.\d{2}$/;
 
 export const quantityRegepxp = /^\d+/;
 
+export const paymentMethodList = ["cash", "bank"]
+
 
 

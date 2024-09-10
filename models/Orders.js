@@ -3,7 +3,7 @@ import * as hooks from './hooks.js';
 import * as userConstants from "../constants/userConstants.js";
 
 const orderItemSchema = new Schema({
-    product: {
+    owner: {
       type: Schema.Types.ObjectId, 
       ref: 'product', 
       required: true,
@@ -36,7 +36,7 @@ const orderShema = new Schema(
       },
       paymentMethod: {
         type: String,
-        default: 'cash',
+        enum: userConstants.paymentMethodList,
       },
       price: {
         type: String,

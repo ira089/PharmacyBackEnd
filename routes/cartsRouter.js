@@ -1,18 +1,16 @@
 import express from "express";
-import {isValidId} from '../middlewares/isValidId.js'
-import cartsControllers from "../controllers/cartsControllers.js";
-import isValidId from "../middlewares/isValidId.js";
+import orderControllers from "../controllers/orderControllers.js";
 import authenticate from "../middlewares/authenticate.js";
 
-import { movieAddSchema, movieUpdateSchema } from "../schemas/moviesSchemas.js";
+import { cartAddSchema,cartUpdSchema} from "../schemas/ordersShema.js";
 import validateBody from "../decorators/validateBody.js";
 
 const cartsRouter = express.Router();
 cartsRouter.use(authenticate);
 
-cartsRouter.get("/", cartsControllers.cartsAll);
-cartsRouter.put("/update", isValidId,  cartsControllers.updQuantity);
-cartsRouter.post("/checkout", isValidId,  cartsControllers.checkOrder);
+cartsRouter.get("/", orderControllers.cartsAll);
+cartsRouter.put("/update", validateBody(cartUpdSchema),  orderControllers.updQuantity);
+cartsRouter.post("/checkout", validateBody(cartAddSchema),  orderControllers.checkOrder);
 
 
 export default cartsRouter;
