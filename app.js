@@ -3,27 +3,26 @@ import morgan from "morgan";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-// import nodemailer from "nodemailer"
 import authRouter from "./routes/authRouter.js";
 import storesRouter from "./routes/storesRouter.js";
 import reviewsRouter from "./routes/reviewsRouter.js";
-import productsRouter from "./routes/productsRouter.js"
-
+import productsRouter from "./routes/productsRouter.js";
+import cartsRouter from "./routes/cartsRouter.js";
 
 dotenv.config();
-const {DB_HOST, PORT = 3000} = process.env;
+const { DB_HOST, PORT = 3000 } = process.env;
 
 const app = express();
 
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
-// app.use(express.static("public"));
 
-app.use("/api/users", authRouter)
+app.use("/api/users", authRouter);
 app.use("/api/pharmacies", storesRouter);
 app.use("/api/reviews", reviewsRouter);
 app.use("/api/products", productsRouter);
+app.use("/api/cart", cartsRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
@@ -34,16 +33,16 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-mongoose.connect(DB_HOST)
-.then(()=> {
-  app.listen(PORT, () => {
-    console.log("Database connection successful");
+mongoose
+  .connect(DB_HOST)
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log("Database connection successful");
+    });
+  })
+  .catch((error) => {
+    console.error(error.message);
+    process.exit(1);
   });
-  
-})
-.catch(error => {
-  console.error(error.message)
-  process.exit(1)
-})
 
-export default app
+export default app;
