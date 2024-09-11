@@ -14,6 +14,12 @@ export const orderSchema = Joi.object({
     status: Joi.string().valid(...userConstants.orderStatusList),
 });
 
+export const orderItemsSchema = Joi.object({
+  idProduct: Joi.string().required(),
+  idOrder: Joi.string().required(),
+  quantity: Joi.string().pattern(userConstants.quantityRegepxp).required(),
+  })
+
 // export const orderUpdSchema = Joi.object({
 //   name: Joi.string(),
 //   email: Joi.string(),
