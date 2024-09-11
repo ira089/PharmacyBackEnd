@@ -8,6 +8,6 @@ export const cartAddItemSchema = Joi.object({
 
 export const cartAddSchema = Joi.object({
     total: Joi.string().pattern(userConstants.priceRegepxp).required(),
-    totalQuantity: Joi.string()..pattern(userConstants.quantityRegepxp).required(),
-    productsUser: Joi.array(cartAddItemSchema).required(),
+    totalQuantity: Joi.string().pattern(userConstants.quantityRegepxp).required(),
+    cart: Joi.array().items(cartAddItemSchema).required(),
     })

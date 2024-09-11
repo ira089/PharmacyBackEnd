@@ -3,7 +3,7 @@ import * as hooks from './hooks.js';
 import * as userConstants from "../constants/userConstants.js";
 
 const cartItemSchema = new Schema({
-    product: {
+  idProduct: {
       type: Schema.Types.ObjectId, 
       ref: 'product', 
       required: true,
@@ -16,14 +16,14 @@ const cartItemSchema = new Schema({
   });
 
 const cartShema = new Schema(
-    { cart_user: [cartItemSchema],
+    { cart: [cartItemSchema],
       
-      price: {
+      total: {
         type: String,
         default: '0.00',
         match: userConstants.priceRegepxp,
       },
-      products: {
+      totalQuantity: {
         type: String,
         default: '0',
         match: userConstants.quantityRegepxp,

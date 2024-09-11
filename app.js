@@ -23,6 +23,7 @@ app.use("/api/pharmacies", storesRouter);
 app.use("/api/reviews", reviewsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/cart", cartsRouter);
+// app.use("/api/order", orderRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
