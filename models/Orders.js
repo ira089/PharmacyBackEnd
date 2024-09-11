@@ -2,67 +2,49 @@ import { Schema, model } from "mongoose";
 import * as hooks from './hooks.js';
 import * as userConstants from "../constants/userConstants.js";
 
-const orderItemSchema = new Schema({
-    owner: {
-      type: Schema.Types.ObjectId, 
-      ref: 'product', 
-      required: true,
-    },
-    quantity: {
-        type: String,
-        default: '0',
-        match: userConstants.quantityRegepxp,
-    }
-  });
-
 const orderShema = new Schema(
     {
       name: {
         type: String,
-        required: [true, "Name is required"],
+        default: '',
       },
       email: {
         type: String,
         match: userConstants.emailRegepxp,
-        required: [true, "Email is required"],
+        default: '',
       },
       phone: {
         type: String,
-        required: [true, "Phone is required"],
+        default: '',
       },
       address: {
         type: String,
-        required: [true, "Address is required"],
+        default: '',
       },
       paymentMethod: {
         type: String,
         enum: userConstants.paymentMethodList,
       },
-      price: {
+      total: {
         type: String,
-        default: '0.00',
         match: userConstants.priceRegepxp,
+        required: true,
       },
-      products: {
+      totalQuantity: {
         type: String,
-        default: '0',
         match: userConstants.quantityRegepxp,
+        required: true,
       },
       status: {
         type: String,
-        default: "Pending",
+        enum: userConstants.orderStatusList,
+        required: true,
       },
       owner: {
         type: Schema.Types.ObjectId,
         ref: "user",
         required: true,
     },
-    order_date: {
-        type: Date,
-        default: Date.now,
-      },
-    
-    cart: [orderItemSchema]
 },
     { versionKey: false, timestamps: true }
   );

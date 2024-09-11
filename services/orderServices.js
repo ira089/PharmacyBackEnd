@@ -1,3 +1,6 @@
 import Order from "../models/Orders.js";
 
-export const addOrder = data => Order.create(data);
+export const addOrderService = data => Order.create(data);
+
+export const updOrderService = (filter, data) =>
+    Order.findOneAndUpdate(filter, data);

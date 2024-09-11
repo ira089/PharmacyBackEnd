@@ -2,30 +2,29 @@ import * as orderServices from "../services/orderServices.js";
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 import HttpError from "../helpers/HttpError.js";
 
-const checkOrder = async (req, res) => {
+const addOrder = async (req, res) => {
 //   console.log(req.body);
   const { _id: owner } = req.user;
-  const cart = req.body.cart.map((el) => ({
-    owner: el.product,
-    quantity: el.quantity,
-  }));
-  console.log(cart)
- 
-  const result = await orderServices.addOrder({
+  const result = await orderServices.addOrderService({
     ...req.body,
     owner,
-    cart
   });
-
   res.status(201).json(result);
 };
 
-const cartsAll = () => {};
+// const cartsAll = () => {};
 
-const updQuantity = () => {};
+const updOrder = async (req, res) => {
+  const { _id: owner } = req.user;
+  const { id } = req.params;
+  const result = await orderServices.updOrderService({owner, _id: id}, req.body);
+  if (!result) {
+      throw HttpError(404, `Order not found`);
+  }
+  res.json(result);
+};
 
 export default {
-  checkOrder: ctrlWrapper(checkOrder),
-  cartsAll: ctrlWrapper(cartsAll),
-  updQuantity: ctrlWrapper(updQuantity),
+addOrder: ctrlWrapper(addOrder),
+  updOrder: ctrlWrapper(updOrder),
 };

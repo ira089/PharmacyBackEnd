@@ -8,6 +8,7 @@ import storesRouter from "./routes/storesRouter.js";
 import reviewsRouter from "./routes/reviewsRouter.js";
 import productsRouter from "./routes/productsRouter.js";
 import cartsRouter from "./routes/cartsRouter.js";
+import orderRouter from "./routes/orderRouter.js";
 
 dotenv.config();
 const { DB_HOST, PORT = 3000 } = process.env;
@@ -23,7 +24,7 @@ app.use("/api/pharmacies", storesRouter);
 app.use("/api/reviews", reviewsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/cart", cartsRouter);
-// app.use("/api/order", orderRouter);
+app.use("/api/order", orderRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
