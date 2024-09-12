@@ -3,7 +3,7 @@ import ctrlWrapper from "../decorators/ctrlWrapper.js";
 import HttpError from "../helpers/HttpError.js";
 
 const addOrder = async (req, res) => {
-//   console.log(req.body);
+  //   console.log(req.body);
   const { _id: owner } = req.user;
   const result = await orderServices.addOrderService({
     ...req.body,
@@ -17,14 +17,19 @@ const addOrder = async (req, res) => {
 const updOrder = async (req, res) => {
   const { _id: owner } = req.user;
   const { id } = req.params;
-  const result = await orderServices.updOrderService({owner, _id: id}, req.body);
+  console.log(owner);
+  console.log(id);
+  const result = await orderServices.updOrderService(
+    { owner, _id: id },
+    req.body
+  );
   if (!result) {
-      throw HttpError(404, `Order not found`);
+    throw HttpError(404, `Order not found`);
   }
   res.json(result);
 };
 
 export default {
-addOrder: ctrlWrapper(addOrder),
+  addOrder: ctrlWrapper(addOrder),
   updOrder: ctrlWrapper(updOrder),
 };
