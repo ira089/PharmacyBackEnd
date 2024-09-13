@@ -3,6 +3,8 @@ import authControllers from "../controllers/authControllers.js";
 import * as usersSchemas from "../schemas/usersSchemas.js";
 import validateBody from "../decorators/validateBody.js";
 import authenticate from "../middlewares/authenticate.js";
+import { orderSchema } from "../schemas/ordersShema.js";
+import { isValidId } from "../middlewares/isValidId.js";
 // import upload from "../middlewares/uploads.js";
 
 const authRouter = express.Router();
@@ -25,9 +27,13 @@ authRouter.post("/logout", authenticate, authControllers.signout);
 
 authRouter.get("/current/full", authenticate, authControllers.currentUserFull);
 
-// authRouter.patch("/", validateBody(usersSchemas.userUpSubcription), authenticate, authControllers.updateSubscription );
-
-// authRouter.post("/avatars", authenticate, upload.single("avatar"), authControllers.updateAvatar );
+authRouter.put(
+  "/current/upd/:id",
+  authenticate,
+  isValidId,
+  validateBody(orderSchema),
+  authControllers.updateOrder
+);
 
 // authRouter.get("/verify/:verificationToken", authControllers.verify );
 

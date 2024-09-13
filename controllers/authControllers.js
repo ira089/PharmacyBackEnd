@@ -97,10 +97,21 @@ const currentUserFull = async (req, res) => {
   }
 };
 
+const updateOrder = async (req, res) => {
+  const { _id: owner } = req.user;
+  const { id } = req.params;
+  const result = await authServices.updateOrder({ owner, _id: id }, req.body);
+  if (!result) {
+    throw HttpError(404, `Order with id=${id} not found`);
+  }
+  res.json(result);
+};
+
 export default {
   signup: ctrlWrapper(signup),
   signin: ctrlWrapper(signin),
   getCurrent: ctrlWrapper(getCurrent),
   signout: ctrlWrapper(signout),
   currentUserFull: ctrlWrapper(currentUserFull),
+  updateOrder: ctrlWrapper(updateOrder),
 };
