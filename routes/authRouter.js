@@ -35,8 +35,4 @@ authRouter.put(
   authControllers.updateOrder
 );
 
-// authRouter.get("/verify/:verificationToken", authControllers.verify );
-
-// authRouter.post("/verify", validateBody(usersSchemas.userEmailSchema), authControllers.resendVerify );
-
 export default authRouter;
