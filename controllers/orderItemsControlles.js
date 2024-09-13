@@ -14,7 +14,7 @@ const addOrderItem = async (req, res) => {
 };
 
 const allOrderItem = async (req, res) => {
-    const { idOrder: owner } = req.body;
+  const { id: owner } = req.params;
   const result = await orderItemService.allOrderItemsService({ owner });
   if (!result) {
     throw HttpError(404, `Cart not found`);
@@ -25,9 +25,12 @@ const allOrderItem = async (req, res) => {
 };
 
 const updOrderItem = async (req, res) => {
-    const { idOrder: owner } = req.body;
+  const { idOrder: owner } = req.body;
   const { id } = req.params;
-  const result = await orderItemService.updOrderItemService({ owner, _id: id }, req.body);
+  const result = await orderItemService.updOrderItemService(
+    { owner, _id: id },
+    req.body
+  );
   if (!result) {
     throw HttpError(404, `Cart not found`);
   }
@@ -36,15 +39,18 @@ const updOrderItem = async (req, res) => {
 };
 
 const delOrderItem = async (req, res) => {
-    const { idOrder: owner } = req.body;
-    const { id } = req.params;
-    const result = await orderItemService.deleteOrderItemService({ owner, _id: id  });
-    if (!result) {
-      throw HttpError(404, `Cart not found`);
-    }
-  
-    res.json(result);
-  };
+  const { idOrder: owner } = req.body;
+  const { id } = req.params;
+  const result = await orderItemService.deleteOrderItemService({
+    owner,
+    _id: id,
+  });
+  if (!result) {
+    throw HttpError(404, `Cart not found`);
+  }
+
+  res.json(result);
+};
 
 export default {
   addOrderItem: ctrlWrapper(addOrderItem),
