@@ -4,6 +4,7 @@ import "dotenv/config.js";
 import HttpError from "../helpers/HttpError.js";
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 import * as authServices from "../services/authServices.js";
+import Order from "../models/Order.js";
 
 const { JWT_SECRET } = process.env;
 
@@ -62,9 +63,44 @@ const signout = async (req, res) => {
   });
 };
 
+// const currentUserFull = async (req, res) => {
+//   const { _id } = req.user;
+//   const foundUser = await authServices.userFull(_id);
+//   const { password, ...user } = foundUser.toObject();
+//   res.json(user);
+// };
+
+const currentUserFull = async (req, res) => {
+  const { _id } = req.user;
+  try {
+    let foundUser = await authServices.userFull(_id);
+
+    // Проверяем, пустой ли массив orders
+    if (foundUser.orders.length === 0) {
+      // Создаем новый заказ
+      const newOrder = new Order({ owner: foundUser._id });
+      await newOrder.save();
+
+      // Добавляем заказ в массив orders пользователя
+      foundUser.orders.push(newOrder._id);
+      await foundUser.save();
+
+      // Перезагружаем пользователя с новым заказом
+      foundUser = await authServices.userFull(_id);
+    }
+
+    // Убираем поле password перед отправкой на фронт
+    const { password, ...user } = foundUser.toObject();
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 export default {
   signup: ctrlWrapper(signup),
   signin: ctrlWrapper(signin),
   getCurrent: ctrlWrapper(getCurrent),
   signout: ctrlWrapper(signout),
+  currentUserFull: ctrlWrapper(currentUserFull),
 };
