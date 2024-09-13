@@ -8,7 +8,7 @@ import { isValidId } from "../middlewares/isValidId.js";
 const orderItemsRouter = express.Router();
 orderItemsRouter.use(authenticate);
 
-orderItemsRouter.get("/", orderItemsControllers.allOrderItem);
+orderItemsRouter.get("/:id", orderItemsControllers.allOrderItem);
 orderItemsRouter.put(
   "/:id",
   isValidId,
