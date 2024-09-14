@@ -39,10 +39,9 @@ const updOrderItem = async (req, res) => {
 };
 
 const delOrderItem = async (req, res) => {
-  const { idOrder: owner } = req.body;
+  // const { idOrder: owner } = req.body;
   const { id } = req.params;
   const result = await orderItemService.deleteOrderItemService({
-    owner,
     _id: id,
   });
   if (!result) {
