@@ -20,8 +20,11 @@ const signup = async (req, res) => {
     ...req.body,
     password: hashPassword,
   });
+  const newOrder = await authServices.addOrder({ owner: newUser._id });
+
   res.status(201).json({
     user: { name: newUser.name, email: newUser.email, phone: newUser.phone },
+    newOrder,
   });
 };
 
@@ -62,13 +65,6 @@ const signout = async (req, res) => {
     message: "Signout success",
   });
 };
-
-// const currentUserFull = async (req, res) => {
-//   const { _id } = req.user;
-//   const foundUser = await authServices.userFull(_id);
-//   const { password, ...user } = foundUser.toObject();
-//   res.json(user);
-// };
 
 const currentUserFull = async (req, res) => {
   const { _id } = req.user;
