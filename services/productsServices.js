@@ -1,7 +1,7 @@
 import Product from "../models/Product.js";
 
 export const getAllproducts = (filter = {}, setting = {}) => {
-  return Product.find(filter, "photo name price", setting);
+  return Product.find(filter, setting);
 };
 
 export const countProducts = (filter) => Product.countDocuments(filter);
