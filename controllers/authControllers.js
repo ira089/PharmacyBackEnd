@@ -16,15 +16,23 @@ const signup = async (req, res) => {
   }
   const hashPassword = await bcrypt.hash(password, 10);
 
-  const newUser = await authServices.signup({
+  let newUser = await authServices.signup({
     ...req.body,
     password: hashPassword,
   });
   const newOrder = await authServices.addOrder({ owner: newUser._id });
 
+  newUser.orders.push(newOrder._id);
+  await newUser.save();
+  newUser = await authServices.userFull(newUser._id);
+
   res.status(201).json({
-    user: { name: newUser.name, email: newUser.email, phone: newUser.phone },
-    newOrder,
+    user: {
+      name: newUser.name,
+      email: newUser.email,
+      phone: newUser.phone,
+      orders: newUser.orders,
+    },
   });
 };
 
