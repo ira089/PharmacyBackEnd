@@ -6,7 +6,6 @@ export const allOrderItemsService = (filter = {}) =>
     "total totalQuantity"
   );
 
-// export const addOrderItemService = (data) => Orderitem.create(data);
 export const addOrderItemService = async (data) => {
   const newItem = await Orderitem.create(data);
   return Orderitem.findById(newItem._id).select("_id idProduct quantity");

@@ -6,15 +6,17 @@ const store = async (req, res) => {
   res.status(200).json(pharmacies);
 };
 
- const storeSix =  async (req, res) => { 
-    // const total = await storeServices.totalPharmacies(); 
-    const skip = Math.floor(Math.random() * 14);
-    console.log(skip)
-    const limit = 6;
-    const pharmaciesSix = await storeServices.randomSixPharmacies({skip, limit}); 
-    console.log(pharmaciesSix)
-    res.status(200).json(pharmaciesSix);
- }
+const storeSix = async (req, res) => {
+  const skip = Math.floor(Math.random() * 14);
+  console.log(skip);
+  const limit = 6;
+  const pharmaciesSix = await storeServices.randomSixPharmacies({
+    skip,
+    limit,
+  });
+  console.log(pharmaciesSix);
+  res.status(200).json(pharmaciesSix);
+};
 
 export default {
   store: ctrlWrapper(store),
