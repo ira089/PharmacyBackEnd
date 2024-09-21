@@ -80,21 +80,16 @@ const currentUserFull = async (req, res) => {
   try {
     let foundUser = await authServices.userFull(_id);
 
-    // Проверяем, пустой ли массив orders
     if (foundUser.orders.length === 0) {
-      // Создаем новый заказ
       const newOrder = new Order({ owner: foundUser._id });
       await newOrder.save();
 
-      // Добавляем заказ в массив orders пользователя
       foundUser.orders.push(newOrder._id);
       await foundUser.save();
 
-      // Перезагружаем пользователя с новым заказом
       foundUser = await authServices.userFull(_id);
     }
 
-    // Убираем поле password перед отправкой на фронт
     const { password, ...user } = foundUser.toObject();
     res.json(user);
   } catch (err) {
