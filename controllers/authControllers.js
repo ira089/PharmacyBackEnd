@@ -57,6 +57,7 @@ const signin = async (req, res) => {
     name: user.name,
     email: user.email,
     phone: user.phone,
+    orders: user.orders,
   });
 };
 
