@@ -52,12 +52,14 @@ const signin = async (req, res) => {
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "27h" });
   await authServices.updateUser({ _id: id }, { token });
 
+  const newUser = await authServices.userFull(user.id);
+
   res.status(200).json({
     token: token,
     name: user.name,
     email: user.email,
     phone: user.phone,
-    orders: user.orders,
+    orders: newUser.orders,
   });
 };
 
