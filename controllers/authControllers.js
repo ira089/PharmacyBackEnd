@@ -81,8 +81,10 @@ const currentUserFull = async (req, res) => {
   const { _id } = req.user;
   try {
     let foundUser = await authServices.userFull(_id);
-
-    if (foundUser.orders.length === 0) {
+    const hasPendingOrder = foundUser.orders.some(
+      (order) => order.status === "Pending"
+    );
+    if (foundUser.orders.length === 0 || !hasPendingOrder) {
       const newOrder = new Order({ owner: foundUser._id });
       await newOrder.save();
 
