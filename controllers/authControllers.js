@@ -16,22 +16,21 @@ const signup = async (req, res) => {
   }
   const hashPassword = await bcrypt.hash(password, 10);
 
-  let newUser = await authServices.signup({
+  const newUser = await authServices.signup({
     ...req.body,
     password: hashPassword,
   });
-  const newOrder = await authServices.addOrder({ owner: newUser._id });
+  // const newOrder = await authServices.addOrder({ owner: newUser._id });
 
-  newUser.orders.push(newOrder._id);
-  await newUser.save();
-  newUser = await authServices.userFull(newUser._id);
+  // newUser.orders.push(newOrder._id);
+  // await newUser.save();
+  // newUser = await authServices.userFull(newUser._id);
 
   res.status(201).json({
     user: {
       name: newUser.name,
       email: newUser.email,
       phone: newUser.phone,
-      orders: newUser.orders,
     },
   });
 };
@@ -52,14 +51,14 @@ const signin = async (req, res) => {
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "27h" });
   await authServices.updateUser({ _id: id }, { token });
 
-  const newUser = await authServices.userFull(user.id);
+  // const newUser = await authServices.userFull(user.id);
 
   res.status(200).json({
     token: token,
     name: user.name,
     email: user.email,
     phone: user.phone,
-    orders: newUser.orders,
+    // orders: newUser.orders,
   });
 };
 
@@ -85,8 +84,7 @@ const currentUserFull = async (req, res) => {
       (order) => order.status === "Pending"
     );
     if (foundUser.orders.length === 0 || !hasPendingOrder) {
-      const newOrder = new Order({ owner: foundUser._id });
-      await newOrder.save();
+      const newOrder = await authServices.addOrder({ owner: foundUser._id });
 
       foundUser.orders.push(newOrder._id);
       await foundUser.save();
@@ -94,8 +92,12 @@ const currentUserFull = async (req, res) => {
       foundUser = await authServices.userFull(_id);
     }
 
-    const { password, ...user } = foundUser.toObject();
-    res.json(user);
+    const pendingOrders = foundUser.orders.filter(
+      (order) => order.status === "Pending"
+    );
+
+    const { password, ...userWithoutPassword } = foundUser.toObject();
+    res.json({ ...userWithoutPassword, orders: pendingOrders });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
