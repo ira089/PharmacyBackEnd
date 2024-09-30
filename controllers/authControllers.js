@@ -51,14 +51,18 @@ const signin = async (req, res) => {
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "27h" });
   await authServices.updateUser({ _id: id }, { token });
 
-  // const newUser = await authServices.userFull(user.id);
+  const newUser = await authServices.userFull(user.id);
+
+  const pendingOrders = newUser.orders.filter(
+    (order) => order.status === "Pending"
+  );
 
   res.status(200).json({
     token: token,
     name: user.name,
     email: user.email,
     phone: user.phone,
-    // orders: newUser.orders,
+    orders: pendingOrders,
   });
 };
 
