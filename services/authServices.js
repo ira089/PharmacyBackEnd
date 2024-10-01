@@ -11,8 +11,6 @@ export const updateUser = (filter, data) => User.findOneAndUpdate(filter, data);
 
 export const clearUsers = () => User.deleteMany({});
 
-// export const userFull = (id) => User.findById(id).populate("orders", "-owner");
-
 export const userFull = (id) =>
   User.findById(id).select("-createdAt -updatedAt").populate({
     path: "orders",

@@ -5,7 +5,6 @@ import validateBody from "../decorators/validateBody.js";
 import authenticate from "../middlewares/authenticate.js";
 import { orderSchema } from "../schemas/ordersShema.js";
 import { isValidId } from "../middlewares/isValidId.js";
-// import upload from "../middlewares/uploads.js";
 
 const authRouter = express.Router();
 

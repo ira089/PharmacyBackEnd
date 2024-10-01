@@ -2,9 +2,9 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import "dotenv/config.js";
 import HttpError from "../helpers/HttpError.js";
+import greateOrder from "../helpers/greateOrder.js";
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 import * as authServices from "../services/authServices.js";
-import Order from "../models/Order.js";
 
 const { JWT_SECRET } = process.env;
 
@@ -15,16 +15,10 @@ const signup = async (req, res) => {
     throw HttpError(409, "Email in use");
   }
   const hashPassword = await bcrypt.hash(password, 10);
-
   const newUser = await authServices.signup({
     ...req.body,
     password: hashPassword,
   });
-  // const newOrder = await authServices.addOrder({ owner: newUser._id });
-
-  // newUser.orders.push(newOrder._id);
-  // await newUser.save();
-  // newUser = await authServices.userFull(newUser._id);
 
   res.status(201).json({
     user: {
@@ -41,7 +35,6 @@ const signin = async (req, res) => {
   if (!user) {
     throw HttpError(401, "Email or password is wrong");
   }
-
   const passwordCompane = await bcrypt.compare(password, user.password);
   if (!passwordCompane) {
     throw HttpError(401, "Email or password is wrong");
@@ -50,12 +43,7 @@ const signin = async (req, res) => {
   const payload = { id };
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "27h" });
   await authServices.updateUser({ _id: id }, { token });
-
-  const newUser = await authServices.userFull(user.id);
-
-  const pendingOrders = newUser.orders.filter(
-    (order) => order.status === "Pending"
-  );
+  const pendingOrders = await greateOrder(user.id);
 
   res.status(200).json({
     token: token,
@@ -82,29 +70,15 @@ const signout = async (req, res) => {
 
 const currentUserFull = async (req, res) => {
   const { _id } = req.user;
-  try {
-    let foundUser = await authServices.userFull(_id);
-    const hasPendingOrder = foundUser.orders.some(
-      (order) => order.status === "Pending"
-    );
-    if (foundUser.orders.length === 0 || !hasPendingOrder) {
-      const newOrder = await authServices.addOrder({ owner: foundUser._id });
+  const { email, name, phone } = req.user;
+  const pendingOrders = await greateOrder(_id);
 
-      foundUser.orders.push(newOrder._id);
-      await foundUser.save();
-
-      foundUser = await authServices.userFull(_id);
-    }
-
-    const pendingOrders = foundUser.orders.filter(
-      (order) => order.status === "Pending"
-    );
-
-    const { password, ...userWithoutPassword } = foundUser.toObject();
-    res.json({ ...userWithoutPassword, orders: pendingOrders });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+  res.status(201).json({
+    email,
+    name,
+    phone,
+    orders: pendingOrders,
+  });
 };
 
 const updateOrder = async (req, res) => {
